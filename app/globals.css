@@ -1,1 +1,169 @@
 @import "tailwindcss";
+
+:root {
+  --canvas: #0b0c0e;
+  --surface: #111316;
+  --ink: #ecedee;
+  --ink-2: #a1a5ab;
+  --ink-3: #6b6f76;
+  --line: #23262b;
+  --accent: #e7b84b;
+  --shell-gutter: clamp(1rem, 4vw, 3rem);
+  --section-space: clamp(5rem, 10vw, 9rem);
+  --hairline: 1px;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --font-display: var(--font-grotesk);
+  --font-body: var(--font-grotesk);
+  --font-mono: var(--font-geist-mono);
+  --text-display: clamp(3rem, 7vw, 4rem);
+  --text-display--line-height: 0.96;
+  --text-section: clamp(1.75rem, 4vw, 2rem);
+  --text-section--line-height: 1.1;
+  --text-record: 1.25rem;
+  --text-record--line-height: 1.25;
+  --text-copy: 1.0625rem;
+  --text-copy--line-height: 1.65;
+  --text-meta: 0.75rem;
+  --text-meta--line-height: 1.5;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 20rem;
+  background: var(--canvas);
+  color-scheme: dark;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background-color: var(--canvas);
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--line) 38%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--line) 38%, transparent) 1px,
+      transparent 1px
+    );
+  background-position: -1px -1px;
+  background-size: 3rem 3rem;
+  color: var(--ink);
+  font-family: var(--font-grotesk), Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.editorial-shell {
+  width: min(74rem, calc(100% - (2 * var(--shell-gutter))));
+  margin-right: var(--shell-gutter);
+  margin-left: clamp(var(--shell-gutter), 8vw, 8rem);
+}
+
+.record-card::before {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: min(7rem, 32%);
+  height: var(--hairline);
+  background: var(--accent);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 180ms ease-out;
+}
+
+.record-card::after {
+  position: absolute;
+  top: 2rem;
+  left: -1.5rem;
+  width: 1.25rem;
+  height: var(--hairline);
+  background: var(--accent);
+  content: "";
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition:
+    opacity 180ms ease-out,
+    transform 180ms ease-out;
+}
+
+.record-card[data-lineage-state="source"]::before {
+  transform: scaleX(1);
+}
+
+.record-card[data-lineage-state="related"] {
+  border-top-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+}
+
+.record-card[data-lineage-state="related"]::after {
+  opacity: 0.8;
+  transform: scaleX(1);
+}
+
+.record-tag[data-lineage-state="source"],
+.record-tag[data-lineage-state="related"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@media (max-width: 52rem) {
+  :root {
+    --section-space: 4.5rem;
+  }
+
+  body {
+    background-size: 2rem 2rem;
+  }
+
+  .editorial-shell {
+    width: auto;
+    margin-inline: var(--shell-gutter);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

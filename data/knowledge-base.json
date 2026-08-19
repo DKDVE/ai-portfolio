@@ -1,0 +1,152 @@
+{
+  "meta": {
+    "note": "Governed knowledge base for the portfolio AI assistant. Each record has a stable id used for citations. The assistant must answer ONLY from these records and cite the id(s) it used. Do not invent facts beyond what is written here.",
+    "owner": "Dhruv Dave",
+    "targetRoles": ["AI Engineer", "ML Engineer", "GenAI Engineer", "Data Engineer (AI-focused)"],
+    "citationLabelFormat": "<type> \u00b7 <shortTitle>"
+  },
+  "records": [
+    {
+      "id": "identity",
+      "type": "identity",
+      "shortTitle": "Dhruv Dave",
+      "always_include": true,
+      "content": "Dhruv Dave (goes by DKD). AI Engineer with a data engineering background. Currently pursuing an MBA in Business Analytics (in collaboration with KPMG) but actively targeting technical AI/ML engineering roles, not management or pure business-analyst roles.",
+      "contact": {
+        "email": "dhruvdave039@gmail.com",
+        "linkedin": "LinkedIn (add exact URL before launch)"
+      },
+      "tags": ["ai-engineer", "identity"]
+    },
+    {
+      "id": "summary",
+      "type": "summary",
+      "shortTitle": "Positioning",
+      "always_include": true,
+      "content": "AI Engineer with a data engineering background and 3+ years building data and GenAI systems on Azure and Databricks. Works hands-on with RAG, multi-agent systems (LangGraph), vector search, and ETL/lakehouse pipelines. Strong at turning unclear business problems into working systems that are traceable and auditable.",
+      "fitSignals": ["genai systems", "rag", "multi-agent", "data engineering", "governed/auditable ai"],
+      "tags": ["rag", "langgraph", "azure", "databricks", "data-engineering", "governance"]
+    },
+    {
+      "id": "exp-kpmg",
+      "type": "experience",
+      "shortTitle": "KPMG \u00b7 Context Layer",
+      "org": "KPMG \u2013 Digital Lighthouse",
+      "role": "AI Engineer (engagement)",
+      "location": "Bengaluru",
+      "start": "2026-06",
+      "end": "2026-07",
+      "content": "Designed and built a working client POC \u2014 an enterprise Context Layer on Azure Databricks \u2014 to fix a core failure mode in a Pharma engagement: AI agents run directly against Unity Catalog data returned unreliable, ungoverned answers because they lacked the client's ontology, canonical metric definitions, and business logic (in one case inferring pharmacovigilance safety signals, an unacceptable risk in regulated Pharma).",
+      "highlights": [
+        "Engineered a multi-agent system with a LangGraph supervisor that classifies user intent (keyword + foundation-model LLM) and dynamically routes each query to one of two strictly isolated, governed paths (never blended), preserving auditability and correctness.",
+        "Implemented a governed Analytics path (Databricks Genie over certified Unity Catalog metric views, using on-behalf-of user identity so column masks and row-level access are enforced per user).",
+        "Implemented a governed Knowledge path (hybrid keyword + semantic vector retrieval over documents in UC Volumes via service-principal identity).",
+        "Embedded governance into every response (route provenance, source citations, audit metadata), backed by write-only Delta audit logs and a pharmacovigilance human-approval trace, surfaced through a React + Vite Databricks App with a FastAPI auth and domain-routing layer."
+      ],
+      "fitSignals": ["multi-agent orchestration", "langgraph", "governed rag", "databricks unity catalog", "auditability/provenance", "regulated-domain ai", "fastapi", "react"],
+      "tags": ["langgraph", "multi-agent", "rag", "databricks", "unity-catalog", "governance", "fastapi", "react", "azure"]
+    },
+    {
+      "id": "exp-freelance",
+      "type": "experience",
+      "shortTitle": "Freelance \u00b7 Data & AI",
+      "org": "Data & AI Consulting (Freelance)",
+      "role": "Data & AI Consultant",
+      "location": "Remote, Bengaluru",
+      "start": "2024-08",
+      "end": "present",
+      "content": "Independent data & AI consulting delivering RAG systems and automation for clients.",
+      "highlights": [
+        "Engineered a RAG system using LangChain and ChromaDB enabling semantic search across 500+ multi-modal documents, improving retrieval accuracy by ~85% over keyword baselines.",
+        "Built a scalable invoice-processing application handling 500+ invoices/month with fully automated parsing, materially reducing manual review time.",
+        "Orchestrated automated ingestion pipelines from 15+ heterogeneous sources, raising data availability from 85% to 95% and cutting ~30 manual hours/week."
+      ],
+      "fitSignals": ["rag", "langchain", "chromadb", "document ai", "automation", "data ingestion pipelines"],
+      "tags": ["rag", "langchain", "chromadb", "automation", "etl", "ocr"]
+    },
+    {
+      "id": "exp-rishabh",
+      "type": "experience",
+      "shortTitle": "Rishabh \u00b7 Data Engineer",
+      "org": "Rishabh Software Pvt Ltd",
+      "role": "Data Engineer",
+      "location": "Vadodara, Gujarat",
+      "start": "2023-01",
+      "end": "2024-08",
+      "content": "Data engineering role building OLAP consolidation, ETL pipelines, and a vector-database layer.",
+      "highlights": [
+        "Constructed an OLAP database consolidating advertising data from Google, Microsoft, and Amazon Ads APIs, serving 50+ business users with 99.5% uptime.",
+        "Implemented ETL pipelines moving streaming data from SharePoint to Azure Blob Storage, processing 2GB+/day at <2% error rate.",
+        "Deployed a QdrantDB vector-database layer supporting similarity search over document embeddings with sub-second query latency."
+      ],
+      "fitSignals": ["etl", "olap", "azure", "vector search", "qdrant", "api integration", "reliability"],
+      "tags": ["etl", "olap", "azure", "qdrant", "vector-search", "data-engineering"]
+    },
+    {
+      "id": "proj-oce",
+      "type": "project",
+      "shortTitle": "OCE",
+      "name": "Operational Context Engine (OCE)",
+      "context": "ET AI Hackathon 2.0 (The Economic Times)",
+      "status": "Advanced to Phase 2, top 12%; results pending (Aug 2026).",
+      "content": "An AI-native context layer for industrial operations. Problem: operations teams stay in reactive firefighting because operational data is fragmented across historians, MES, ERP, and maintenance logs, and tribal knowledge is lost between shifts. Approach: map operational data to a shared ontology and canonical definitions, then apply RAG + LLM reasoning over a governed knowledge substrate to deliver evidence-cited, proactive root-cause analysis instead of raw alerts. Outcome: a reference design that shifts operations from reactive to proactive, extending the governed context-layer thinking from the KPMG work into the industrial/manufacturing domain.",
+      "fitSignals": ["rag", "ontology / context layer", "root-cause analysis", "governed knowledge", "industrial/manufacturing ai"],
+      "tags": ["rag", "context-layer", "ontology", "llm-reasoning", "governance"]
+    },
+    {
+      "id": "skills",
+      "type": "skills",
+      "shortTitle": "Skills",
+      "groups": {
+        "Languages": ["Python", "SQL", "PySpark", "Power BI"],
+        "AI / LLMs": ["Multi-agent orchestration (LangGraph)", "RAG", "LangChain", "hybrid & semantic search", "prompt engineering", "foundation-model integration (OpenAI, Anthropic, Hugging Face, Ollama)", "NLP", "OCR"],
+        "Databases": ["PostgreSQL", "MSSQL", "MySQL", "Azure SQL", "ChromaDB", "Qdrant", "Milvus"],
+        "Data & AI Platforms": ["Databricks (Delta Lake, Unity Catalog, Genie)", "Azure (Data Lake Storage, Data Factory, Blob Storage, Synapse, Functions)"],
+        "Data Engineering": ["Medallion/lakehouse architecture", "ETL/ELT", "streaming ingestion", "OLAP & dimensional modeling", "data quality", "data governance"],
+        "Backend & APIs": ["FastAPI", "REST APIs"],
+        "DevOps": ["Docker", "CI/CD", "Azure DevOps", "Git"]
+      },
+      "tags": ["python", "sql", "pyspark", "langgraph", "rag", "databricks", "azure", "fastapi", "docker"]
+    },
+    {
+      "id": "edu-mba",
+      "type": "education",
+      "shortTitle": "MBA \u00b7 Business Analytics",
+      "content": "MBA, Business Analytics (in collaboration with KPMG) \u2014 UPES, Dehradun. Expected May 2027. CGPA 8.67/10. Focus: AI, Data, and Enterprise Decision-Making.",
+      "tags": ["mba", "business-analytics", "education"]
+    },
+    {
+      "id": "edu-btech",
+      "type": "education",
+      "shortTitle": "B.Tech \u00b7 CSE",
+      "content": "B.Tech, Computer Science & Engineering \u2014 Parul University, Vadodara. 2023. GPA 7.73/10.",
+      "tags": ["btech", "cse", "education"]
+    },
+    {
+      "id": "certs",
+      "type": "certifications",
+      "shortTitle": "Certifications",
+      "items": [
+        "Databricks Certified Data Engineer Associate (2025)",
+        "Databricks Accredited Generative AI Fundamentals (2024)",
+        "Generative AI and LLMs \u2014 IIM Bangalore (2025)",
+        "Building RAG Agents with LLMs \u2014 Nvidia (2025)",
+        "BCG GenAI Job Simulation \u2014 Forage (2025)",
+        "Microsoft Certified: Azure Data Fundamentals (DP-900) (2023)",
+        "Microsoft Certified: Azure Fundamentals (AZ-900) (2023)"
+      ],
+      "tags": ["databricks", "azure", "genai", "rag", "certifications"]
+    },
+    {
+      "id": "extracurricular",
+      "type": "extracurricular",
+      "shortTitle": "Extracurricular",
+      "items": [
+        "National Finalist, Enigma Case Study Competition \u2014 Atharv Ranbhoomi'25, IIM Indore (2025).",
+        "National Cadet Corps (1 Guj Air Sqn NCC), Cadet (2019\u20132022).",
+        "Travel Guide & Instructor \u2014 on-site operations (NGO) (2022\u20132024)."
+      ],
+      "tags": ["leadership", "competitions", "ncc"]
+    }
+  ]
+}

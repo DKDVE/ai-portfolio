@@ -1,4 +1,5 @@
 import { AssistantTrigger } from "@/components/assistant-trigger";
+import { AssistantProvider } from "@/components/assistant-provider";
 import { ConversationalHero } from "@/components/conversational-hero";
 import { LineageScope } from "@/components/lineage-scope";
 import { Record } from "@/components/record";
@@ -13,6 +14,7 @@ import {
   getProjectRecord,
   getSkillsRecord,
   getSummaryRecord,
+  knowledgeBase,
 } from "@/lib/knowledge-base";
 import { matchLineageKeys } from "@/lib/lineage";
 
@@ -78,6 +80,7 @@ export default function Home() {
       lowSpecificityKeys={lowSpecificityLineageKeys}
       targets={lineageTargets}
     >
+      <AssistantProvider records={knowledgeBase.records}>
       <div className="min-h-screen overflow-x-hidden bg-canvas text-ink">
         <ConversationalHero identity={identity} />
 
@@ -294,6 +297,7 @@ export default function Home() {
 
         <AssistantTrigger />
       </div>
+      </AssistantProvider>
     </LineageScope>
   );
 }

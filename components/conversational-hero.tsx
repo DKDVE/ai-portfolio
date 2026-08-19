@@ -1,15 +1,8 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import Image from "next/image";
+import { AssistantHeroQuery } from "@/components/assistant-hero-query";
 import type { IdentityRecord } from "@/lib/knowledge-base";
-
-const personaPrompts = [
-  "Recruiter: is he a fit for a GenAI / RAG role?",
-  "Hiring manager: walk me through the KPMG Context Layer",
-  "Tech lead: multi-agent / LangGraph experience?",
-  "Peer: Databricks + governance depth?",
-  "How do I reach him?",
-] as const;
 
 const hasProfilePhoto = existsSync(
   join(process.cwd(), "public", "dhruv-dave.jpg"),
@@ -58,49 +51,7 @@ export function ConversationalHero({ identity }: ConversationalHeroProps) {
           </p>
         </div>
 
-        <div className={hasProfilePhoto ? undefined : "max-w-[66ch]"}>
-          <label className="sr-only" htmlFor="hero-query">
-            Ask about Dhruv Dave&apos;s fit, work, or contact details
-          </label>
-          <div className="flex min-h-14 items-center gap-3 border border-line bg-surface px-4 transition-colors duration-200 ease-out focus-within:border-accent">
-            <span
-              aria-hidden="true"
-              className="shrink-0 font-mono text-meta tracking-[0.1em] text-ink-3 uppercase"
-            >
-              Query ›
-            </span>
-            <input
-              aria-describedby="hero-query-status"
-              className="min-w-0 flex-1 bg-transparent font-mono text-meta tracking-[0.04em] text-ink outline-none placeholder:text-ink-3"
-              id="hero-query"
-              placeholder="Ask about my fit, my work, or how to reach me…"
-              type="text"
-            />
-          </div>
-
-          <div
-            aria-label="Suggested assistant questions"
-            className="mt-4 flex flex-wrap gap-2"
-            role="group"
-          >
-            {personaPrompts.map((prompt) => (
-              <button
-                className="record-tag inline-flex min-h-8 items-center border border-line bg-transparent px-2.5 text-left font-mono text-meta tracking-[0.06em] text-ink-2 transition-colors duration-200 ease-out hover:border-ink-2"
-                key={prompt}
-                type="button"
-              >
-                {prompt}
-              </button>
-            ))}
-          </div>
-          <p
-            className="mt-4 font-mono text-meta tracking-[0.1em] text-ink-3 uppercase"
-            id="hero-query-status"
-          >
-            Query status · static interface
-          </p>
-          {/* TODO(phase-3): wire this static query field and persona prompts to the governed assistant. */}
-        </div>
+        <div className={hasProfilePhoto ? undefined : "max-w-[66ch]"}><AssistantHeroQuery /></div>
 
         {identity.location ? (
           <p className="max-w-[34ch] border-l border-line pl-5 font-mono text-meta tracking-[0.08em] text-ink-2 uppercase lg:col-start-2">

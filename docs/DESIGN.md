@@ -84,6 +84,24 @@ concept — don't add competing animations.
 - Semantic landmarks and headings; the assistant panel is a labelled dialog with focus
   management.
 
+## Conversational hero (top of page, above the records)
+- A conversational entry point sits above the editorial records — same Governed Console language, left-biased.
+- Contains: personal photo (framed as a RECORD — hairline border + mono caption, NOT a round avatar), name (display), the one-line positioning from the `identity` record (the "targeting technical AI/ML engineering roles, not management" framing), and a prominent "ask" input.
+- Ask input: styled as a governed query field — mono prompt marker, hairline border, accent focus ring. Placeholder e.g. "Ask about my fit, my work, or how to reach me…".
+- Persona chips: a row of ~4–5 suggested prompts that seed the assistant. Same mono/hairline styling as Tag, but interactive.
+- Answer rendering (Phase 3): responses appear as rich cards inline under the hero — fit card, project card, skills card, contact card — each carrying citation chips to source records. Reuse Record/Tag primitives.
+- The existing docked console ("QUERY LAYER · ASK ABOUT MY FIT") stays as the persistent entry once the visitor scrolls into the records. Both open the SAME assistant.
+- Accent stays semantic (focus / active chip / citations only). No colored chat bubbles.
+- Photo: next/image, explicit width/height, priority, object-fit cover; optional-safe (absent → hero still renders, no layout break).
+- Reduced-motion safe; fully keyboard-navigable (input, chips, cards).
+
+Suggested persona chips (tailored):
+- "Recruiter: is he a fit for a GenAI / RAG role?"
+- "Hiring manager: walk me through the KPMG Context Layer"
+- "Tech lead: multi-agent / LangGraph experience?"
+- "Peer: Databricks + governance depth?"
+- "How do I reach him?"
+  
 ## Anti-generic checklist (design "done")
 - [ ] No centered name-on-void hero; layout is editorial and left-biased.
 - [ ] Exactly one accent, used only for provenance/active state.

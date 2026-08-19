@@ -103,18 +103,37 @@ button:focus-visible,
   transition: transform 180ms ease-out;
 }
 
-.record-card:hover::before,
-.record-card:focus-visible::before {
+.record-card::after {
+  position: absolute;
+  top: 2rem;
+  left: -1.5rem;
+  width: 1.25rem;
+  height: var(--hairline);
+  background: var(--accent);
+  content: "";
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition:
+    opacity 180ms ease-out,
+    transform 180ms ease-out;
+}
+
+.record-card[data-lineage-state="source"]::before {
   transform: scaleX(1);
 }
 
-.record-card:hover .record-tag,
-.record-card:focus-visible .record-tag {
-  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
-  color: var(--ink);
+.record-card[data-lineage-state="related"] {
+  border-top-color: color-mix(in srgb, var(--accent) 55%, var(--line));
 }
 
-.record-tag:hover {
+.record-card[data-lineage-state="related"]::after {
+  opacity: 0.8;
+  transform: scaleX(1);
+}
+
+.record-tag[data-lineage-state="source"],
+.record-tag[data-lineage-state="related"] {
   border-color: var(--accent);
   color: var(--accent);
 }

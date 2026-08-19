@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import type { ReactNode } from "react";
-import knowledgeBase from "@/data/knowledge-base.json";
+import { getIdentityRecord, getSummaryRecord } from "@/lib/knowledge-base";
 import "./globals.css";
 
 const grotesk = localFont({
@@ -18,12 +18,8 @@ const mono = localFont({
   weight: "100 900",
 });
 
-const identity = knowledgeBase.records.find((record) => record.id === "identity");
-const summary = knowledgeBase.records.find((record) => record.id === "summary");
-
-if (!identity?.shortTitle || !summary?.content) {
-  throw new Error("Identity and summary records are required for site metadata.");
-}
+const identity = getIdentityRecord();
+const summary = getSummaryRecord();
 
 export const metadata: Metadata = {
   title: identity.shortTitle,

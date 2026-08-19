@@ -10,6 +10,12 @@ const injectionPatterns = [
 
 const scopeTerms = new Set("dhruv dkd experience skill skills project projects kpmg freelance rishabh oce operational context engineer engineering role fit hire hiring recruiter career work rag langgraph databricks azure governance data ai ml genai education certification certifications mba btech contact email linkedin reach location availability salary rate terms".split(" "));
 const commitmentPattern = /\b(?:agree|commit|promise).{0,50}\b(?:salary|pay|rate|work|terms?)\b|\b(?:salary|pay|hourly rate|compensation|contract terms?)\b/i;
+const directProfileQuestionPatterns = [
+  /\b(?:does|has|did|can|is|was)\s+(?:dhruv|dkd|he)\b/i,
+  /\b(?:what|which|where|when|how)\s+(?:has|did|can|does|is|was)\s+(?:dhruv|dkd|he)\b/i,
+  /\b(?:dhruv|dkd)(?:'s|’s)\b/i,
+  /\bhis\s+(?:skills?|experience|projects?|background|work|education|certifications?)\b/i,
+] as const;
 
 export type PreflightResult = Readonly<{ allowed: true }> | Readonly<{ allowed: false; status: 400 | 403; message: string }>;
 
@@ -20,7 +26,9 @@ export function validateAndScreenMessage(value: unknown): PreflightResult {
   if (injectionPatterns.some((pattern) => pattern.test(message))) return { allowed: false, status: 403, message: "I can only discuss Dhruv's professional profile from the governed records." };
   if (commitmentPattern.test(message)) return { allowed: false, status: 403, message: "I can't make commitments on Dhruv's behalf. Please use the contact details on this site." };
   const terms = message.toLocaleLowerCase("en").match(/[a-z0-9]+/g) ?? [];
-  if (!terms.some((term) => scopeTerms.has(term))) return { allowed: false, status: 403, message: "I can help with Dhruv's experience, skills, projects, education, certifications, or fit for a role." };
+  const hasKnownScopeTerm = terms.some((term) => scopeTerms.has(term));
+  const isDirectProfileQuestion = directProfileQuestionPatterns.some((pattern) => pattern.test(message));
+  if (!hasKnownScopeTerm && !isDirectProfileQuestion) return { allowed: false, status: 403, message: "I can help with Dhruv's experience, skills, projects, education, certifications, or fit for a role." };
   return { allowed: true };
 }
 

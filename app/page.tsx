@@ -81,7 +81,7 @@ export default function Home() {
       targets={lineageTargets}
     >
       <AssistantProvider records={knowledgeBase.records}>
-      <div className="min-h-screen overflow-x-hidden bg-canvas text-ink">
+      <div className="min-h-screen overflow-x-hidden bg-canvas pb-24 text-ink sm:pb-0">
         <ConversationalHero identity={identity} />
 
         <main className="editorial-shell">
@@ -255,7 +255,7 @@ export default function Home() {
           </section>
         </main>
 
-        <footer className="editorial-shell border-t border-line py-8 pr-24 sm:py-10 sm:pr-36">
+        <footer className="editorial-shell border-t border-line py-8 pb-24 sm:py-10 sm:pr-36">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="font-display text-record font-medium text-ink">

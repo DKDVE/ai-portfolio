@@ -20,10 +20,44 @@ const mono = localFont({
 
 const identity = getIdentityRecord();
 const summary = getSummaryRecord();
+const title = `${identity.shortTitle} · AI Engineer`;
+const metadataBase = new URL(
+  process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000",
+);
 
 export const metadata: Metadata = {
-  title: identity.shortTitle,
+  metadataBase,
+  title,
   description: summary.content,
+  applicationName: identity.shortTitle,
+  icons: {
+    icon: "/icon.svg",
+  },
+  openGraph: {
+    type: "website",
+    title,
+    description: summary.content,
+    images: [
+      {
+        url: "/og-governed-console.png",
+        width: 1792,
+        height: 936,
+        alt: "Governed Console record lineage diagram",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description: summary.content,
+    images: ["/og-governed-console.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

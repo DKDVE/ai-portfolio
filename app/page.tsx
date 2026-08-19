@@ -42,6 +42,20 @@ export default function Home() {
   const extracurricular = getExtracurricularRecord();
   const email = identity.contact?.email?.trim();
   const linkedIn = getExternalHttpUrl(identity.contact?.linkedin);
+  const lineageCorpus = [
+    identity,
+    summary,
+    ...experiences,
+    project,
+    skills,
+    ...education,
+    certifications,
+    extracurricular,
+  ].map(({ id, tags }) => ({ id, tags }));
+  const lineageTargets = [...experiences, project].map(({ id, tags }) => ({
+    id,
+    tags,
+  }));
   const lineageKeys = [
     ...new Set(
       [
@@ -54,9 +68,16 @@ export default function Home() {
       ].flatMap((record) => record.tags),
     ),
   ];
+  const lowSpecificityLineageKeys = (
+    skills.groups["Data & AI Platforms"] ?? []
+  ).flatMap((skill) => matchLineageKeys(skill, lineageKeys));
 
   return (
-    <LineageScope>
+    <LineageScope
+      corpus={lineageCorpus}
+      lowSpecificityKeys={lowSpecificityLineageKeys}
+      targets={lineageTargets}
+    >
       <div className="min-h-screen overflow-x-hidden bg-canvas text-ink">
         <ConversationalHero identity={identity} />
 

@@ -1,4 +1,6 @@
 import { AssistantTrigger } from "@/components/assistant-trigger";
+import { AssistantProvider } from "@/components/assistant-provider";
+import { ConversationalHero } from "@/components/conversational-hero";
 import { LineageScope } from "@/components/lineage-scope";
 import { Record } from "@/components/record";
 import { SectionHeading } from "@/components/section-heading";
@@ -12,8 +14,24 @@ import {
   getProjectRecord,
   getSkillsRecord,
   getSummaryRecord,
+  knowledgeBase,
 } from "@/lib/knowledge-base";
 import { matchLineageKeys } from "@/lib/lineage";
+
+function getExternalHttpUrl(value: string | undefined): string | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "http:"
+      ? url.toString()
+      : undefined;
+  } catch {
+    return undefined;
+  }
+}
 
 export default function Home() {
   const identity = getIdentityRecord();
@@ -24,6 +42,22 @@ export default function Home() {
   const education = getEducationRecords();
   const certifications = getCertificationsRecord();
   const extracurricular = getExtracurricularRecord();
+  const email = identity.contact?.email?.trim();
+  const linkedIn = getExternalHttpUrl(identity.contact?.linkedin);
+  const lineageCorpus = [
+    identity,
+    summary,
+    ...experiences,
+    project,
+    skills,
+    ...education,
+    certifications,
+    extracurricular,
+  ].map(({ id, tags }) => ({ id, tags }));
+  const lineageTargets = [...experiences, project].map(({ id, tags }) => ({
+    id,
+    tags,
+  }));
   const lineageKeys = [
     ...new Set(
       [
@@ -36,35 +70,19 @@ export default function Home() {
       ].flatMap((record) => record.tags),
     ),
   ];
+  const lowSpecificityLineageKeys = (
+    skills.groups["Data & AI Platforms"] ?? []
+  ).flatMap((skill) => matchLineageKeys(skill, lineageKeys));
 
   return (
-    <LineageScope>
+    <LineageScope
+      corpus={lineageCorpus}
+      lowSpecificityKeys={lowSpecificityLineageKeys}
+      targets={lineageTargets}
+    >
+      <AssistantProvider records={knowledgeBase.records}>
       <div className="min-h-screen overflow-x-hidden bg-canvas text-ink">
-        <header className="editorial-shell border-b border-line pt-8 pb-16 sm:pt-10 sm:pb-24">
-          <div className="flex items-start justify-between gap-6 font-mono text-meta tracking-[0.12em] text-ink-2 uppercase">
-            <span>Record · {identity.id}</span>
-            <span className="max-w-[24ch] text-right">
-              {identity.availability}
-            </span>
-          </div>
-
-          <div className="mt-16 grid gap-8 lg:mt-24 lg:grid-cols-[minmax(0,2fr)_minmax(15rem,1fr)] lg:items-end">
-            <div>
-              <h1 className="max-w-[12ch] font-display text-display font-medium tracking-[-0.055em] text-ink">
-                {identity.shortTitle}
-              </h1>
-              <p className="mt-8 max-w-[66ch] text-copy text-ink-2">
-                {summary.content}
-              </p>
-            </div>
-
-            <p className="max-w-[34ch] border-l border-line pl-5 font-mono text-meta tracking-[0.08em] text-ink-2 uppercase lg:justify-self-end">
-              Location · {identity.location}
-              <br />
-              Source · knowledge-base
-            </p>
-          </div>
-        </header>
+        <ConversationalHero identity={identity} />
 
         <main className="editorial-shell">
           <section
@@ -243,12 +261,33 @@ export default function Home() {
               <p className="font-display text-record font-medium text-ink">
                 {identity.shortTitle}
               </p>
-              <a
-                className="mt-2 inline-block font-mono text-meta tracking-[0.08em] text-ink-2 transition-colors duration-200 hover:text-accent"
-                href={`mailto:${identity.contact.email}`}
-              >
-                {identity.contact.email}
-              </a>
+              <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 font-mono text-meta tracking-[0.08em] text-ink-2">
+                {email ? (
+                  <a
+                    className="transition-colors duration-200 hover:text-accent"
+                    href={`mailto:${email}`}
+                  >
+                    {email}
+                  </a>
+                ) : null}
+                {linkedIn ? (
+                  <a
+                    className="transition-colors duration-200 hover:text-accent"
+                    href={linkedIn}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    LinkedIn
+                  </a>
+                ) : null}
+              </div>
+              {identity.location || identity.availability ? (
+                <p className="mt-3 font-mono text-meta tracking-[0.08em] text-ink-3">
+                  {[identity.location, identity.availability]
+                    .filter((value): value is string => Boolean(value))
+                    .join(" · ")}
+                </p>
+              ) : null}
             </div>
             <p className="font-mono text-meta tracking-[0.1em] text-ink-2 uppercase">
               Source · data/knowledge-base.json
@@ -258,6 +297,7 @@ export default function Home() {
 
         <AssistantTrigger />
       </div>
+      </AssistantProvider>
     </LineageScope>
   );
 }

@@ -35,6 +35,7 @@ export function Record({
 
   return (
     <article
+      id={id}
       aria-labelledby={headingId}
       className="record-card group/record relative grid scroll-mt-8 gap-7 border-t border-line py-9 outline-none md:grid-cols-[minmax(12rem,0.8fr)_minmax(0,1.7fr)] md:gap-12 md:py-12"
       data-lineage-state={lineage.state}

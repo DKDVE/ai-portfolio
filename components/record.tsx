@@ -1,4 +1,7 @@
+"use client";
+
 import { Tag } from "@/components/tag";
+import { useLineageItem } from "@/components/lineage-scope";
 
 type RecordProps = Readonly<{
   id: string;
@@ -16,12 +19,30 @@ export function Record({
   tags = [],
 }: RecordProps) {
   const headingId = `record-${id}-heading`;
+  const lineage = useLineageItem(`record:${id}`, tags);
+
+  function handleBlur(event: React.FocusEvent<HTMLElement>) {
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      lineage.clear();
+    }
+  }
+
+  function handleMouseLeave(event: React.MouseEvent<HTMLElement>) {
+    if (!event.currentTarget.contains(document.activeElement)) {
+      lineage.clear();
+    }
+  }
 
   return (
     <article
       aria-labelledby={headingId}
       className="record-card group/record relative grid scroll-mt-8 gap-7 border-t border-line py-9 outline-none md:grid-cols-[minmax(12rem,0.8fr)_minmax(0,1.7fr)] md:gap-12 md:py-12"
+      data-lineage-state={lineage.state}
       data-record-id={id}
+      onBlur={handleBlur}
+      onFocus={lineage.activate}
+      onMouseEnter={lineage.activate}
+      onMouseLeave={handleMouseLeave}
       tabIndex={0}
     >
       <div>
@@ -55,13 +76,13 @@ export function Record({
         {tags.length > 0 ? (
           <div className="mt-7 flex flex-wrap gap-2" aria-label="Record tags">
             {tags.map((tag) => (
-              <Tag key={tag}>{tag}</Tag>
+              <Tag key={tag} lineageKeys={[tag]}>
+                {tag}
+              </Tag>
             ))}
           </div>
         ) : null}
       </div>
-
-      {/* TODO(phase-2): connect related records and tags with cross-record lineage lines once real record relationships are rendered. */}
     </article>
   );
 }
